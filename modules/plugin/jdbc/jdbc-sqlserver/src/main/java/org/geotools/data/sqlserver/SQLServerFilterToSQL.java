@@ -17,8 +17,12 @@
 package org.geotools.data.sqlserver;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import org.geotools.data.jdbc.FilterToSQL;
 import org.geotools.filter.FilterCapabilities;
@@ -50,7 +54,17 @@ import com.vividsolutions.jts.geom.LinearRing;
  */
 public class SQLServerFilterToSQL extends FilterToSQL {
 
-    @Override
+    public SQLServerFilterToSQL(StringWriter output) {
+		// TODO Auto-generated constructor stub
+    	super.out = output;
+	}
+
+	public SQLServerFilterToSQL() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	@Override
     protected FilterCapabilities createFilterCapabilities() {
         FilterCapabilities caps = super.createFilterCapabilities();
         caps.addAll(SQLDialect.BASE_DBMS_CAPABILITIES);
@@ -185,11 +199,24 @@ public class SQLServerFilterToSQL extends FilterToSQL {
     }
 
     static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    
-    @Override
+    static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static{
+        // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
+        // get a local timezone encoding regardless of the actual Date value        
+        DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+        DATETIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
+    }
+
+	@Override
     protected void writeLiteral(Object literal) throws IOException {
-        if (literal instanceof Date) {
-            out.write("'" + DATETIME_FORMAT.format(literal) + "'");
+    	
+    	if (literal instanceof Date) {           
+            if (literal instanceof java.sql.Date) {
+                out.write("'" + DATE_FORMAT.format(literal) +  "'");
+            }
+            else {
+            	out.write("'" + DATETIME_FORMAT.format(literal) + "'");
+            }
         } else {
             super.writeLiteral(literal);
         }
