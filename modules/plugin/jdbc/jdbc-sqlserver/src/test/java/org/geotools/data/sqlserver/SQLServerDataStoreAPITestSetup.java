@@ -87,4 +87,27 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void dropBuildingTable() throws Exception {
         run("DROP TABLE building");
     }
+
+	@Override
+	protected void createBuildingTable() throws Exception {
+		/**
+		 * (10 40), (40 30), (20 20), (30 10)
+		 */
+		run("CREATE TABLE building(fid int IDENTITY(0,1) PRIMARY KEY, id int, "
+	            + "geom geometry, name nvarchar(255) )"); //use nvarchar to test nvarchar mappings (GEOT-3609)
+	        run("INSERT INTO building (id,geom,name) VALUES (0,"
+	            + "geometry::STGeomFromText('POINT(10 40.00001)',4326)," + "'b1')");
+	        run("INSERT INTO building (id,geom,name) VALUES ( 1,"
+	            + "geometry::STGeomFromText('POINT(10 40.00002)',4326)," + "'b2')");
+	        run("INSERT INTO building (id,geom,name) VALUES ( 2,"
+	            + "geometry::STGeomFromText('POINT(10 40.00003)',4326)," + "'b3')");
+	        run("INSERT INTO building (id,geom,name) VALUES ( 3,"
+		        + "geometry::STGeomFromText('POINT(10 40.00004)',4326)," + "'b4')");
+	        run("INSERT INTO building (id,geom,name) VALUES ( 3,"
+		        + "geometry::STGeomFromText('POINT(10 40.00005)',4326)," + "'b5')");
+	        
+	        //run("CREATE SPATIAL INDEX _building_geometry_index on building(geom) WITH (BOUNDING_BOX = (-180, -90, 180, 90), GRIDS =(LEVEL_1 = MEDIUM,LEVEL_2 = MEDIUM,LEVEL_3 = MEDIUM,LEVEL_4 = MEDIUM)CELLS_PER_OBJECT = 16, PAD_INDEX  = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON)");
+	        run("CREATE SPATIAL INDEX _building_geometry_index on building(geom) WITH (BOUNDING_BOX = (-180, -90, 180, 90), GRIDS =(LOW, LOW, LOW, LOW),CELLS_PER_OBJECT = 1, PAD_INDEX  = ON)");
+			
+	}
 }
