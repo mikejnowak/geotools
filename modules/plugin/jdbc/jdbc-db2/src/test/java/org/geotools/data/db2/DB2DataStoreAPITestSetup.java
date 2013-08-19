@@ -108,6 +108,12 @@ public class DB2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         con.close();
     }
 
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
     
     
     

@@ -100,4 +100,10 @@ public class SpatiaLiteDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run( "DROP TABLE building");
         run( "DELETE FROM geometry_columns WHERE f_table_name = 'building'");
     }
+
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

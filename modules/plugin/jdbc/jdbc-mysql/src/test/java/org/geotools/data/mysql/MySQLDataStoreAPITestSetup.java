@@ -78,4 +78,10 @@ public class MySQLDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
     protected void dropBuildingTable() throws Exception {
         run("DROP TABLE building");
     }
+
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

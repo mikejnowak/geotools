@@ -167,4 +167,10 @@ public class TeradataDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"road_geom_idx\"");
     }
 
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

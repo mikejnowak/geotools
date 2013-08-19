@@ -124,5 +124,11 @@ public class OracleDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         run("DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME = 'BUILDING'");
     }
 
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

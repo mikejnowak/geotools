@@ -36,4 +36,10 @@ public class EmptyJDBCDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 	@Override
 	protected void createLakeTable() throws Exception {
 	}
+
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

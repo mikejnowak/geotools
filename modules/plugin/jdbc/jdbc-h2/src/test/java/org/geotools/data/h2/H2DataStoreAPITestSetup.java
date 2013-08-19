@@ -91,4 +91,10 @@ public class H2DataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         //runSafe("DELETE FROM geometry_columns where f_table_name = 'building'");
         runSafe("DROP TABLE \"building_HATBOX\"");
     }
+
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

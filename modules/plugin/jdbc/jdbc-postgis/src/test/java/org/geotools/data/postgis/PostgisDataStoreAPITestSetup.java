@@ -121,4 +121,10 @@ public class PostgisDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
         runSafe("DROP TABLE \"road\"");
     }
 
+	@Override
+	protected void createBuildingTable() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
