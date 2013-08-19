@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.PackedCoordinateSequenceFactory;
@@ -120,6 +121,22 @@ public abstract class JDBCSpatialFiltersTest extends JDBCTestSupport {
         Intersects is = ff.intersects(ff.property(aname("geom")), ff.literal(ls));
         FeatureCollection features = dataStore.getFeatureSource(tname("road")).getFeatures(is);
         checkSingleResult(features, "r1");
+    }
+    
+    /**
+     * This test executes against the buildings table created. The issue I noted with geotools
+     * involved using a forced approximation when using a selection tool select from a bounding box.
+     * The spatial indexing on MSSQL appears to be overzealous and this test case proves the failure
+     * @throws Exception
+     */
+    public void testIntersectsFilterForPointsWithBoudingBox() throws Exception{
+    	FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2(null);
+        GeometryFactory gf = new GeometryFactory();
+        PackedCoordinateSequenceFactory sf = new PackedCoordinateSequenceFactory();
+        BBOX bx = ff.bbox(aname("geom"), 10,40.00004,10.9,40.9, "EPSG:4326");
+        FeatureCollection features2 = dataStore.getFeatureSource(tname("building")).getFeatures(bx);
+        checkSingleResult(features2, "r1");
+    	
     }
     
     public void testIntersectsRingFilter() throws Exception {

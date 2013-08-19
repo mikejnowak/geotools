@@ -61,6 +61,7 @@ public abstract class JDBCDataStoreAPITestSetup extends JDBCDelegatingTestSetup 
         createRoadTable();
         createRiverTable();
         createLakeTable();
+        createBuildingTable();
     }
 
     /**
@@ -91,9 +92,10 @@ public abstract class JDBCDataStoreAPITestSetup extends JDBCDelegatingTestSetup 
      * This feature type / table is created by one of the tests in teh suite,
      * and not by this test harness.
      * </p>
-     */
+     */ 
     protected abstract void dropBuildingTable() throws Exception;
 
+    protected abstract void createBuildingTable() throws Exception;
     /**
      * Creates a table with the following schema:
      * <p>
