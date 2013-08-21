@@ -106,8 +106,7 @@ public class SQLServerDataStoreAPITestSetup extends JDBCDataStoreAPITestSetup {
 	        run("INSERT INTO building (id,geom,name) VALUES ( 3,"
 		        + "geometry::STGeomFromText('POINT(10 40.00005)',4326)," + "'b5')");
 	        
-	        //run("CREATE SPATIAL INDEX _building_geometry_index on building(geom) WITH (BOUNDING_BOX = (-180, -90, 180, 90), GRIDS =(LEVEL_1 = MEDIUM,LEVEL_2 = MEDIUM,LEVEL_3 = MEDIUM,LEVEL_4 = MEDIUM)CELLS_PER_OBJECT = 16, PAD_INDEX  = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON)");
-	        run("CREATE SPATIAL INDEX _building_geometry_index on building(geom) WITH (BOUNDING_BOX = (-180, -90, 180, 90), GRIDS =(LOW, LOW, LOW, LOW),CELLS_PER_OBJECT = 1, PAD_INDEX  = ON)");
+	        run("CREATE SPATIAL INDEX _building_geometry_index on building(geom) WITH (BOUNDING_BOX = (-180, -90, 180, 90), GRIDS =(LOW, LOW, LOW, LOW),CELLS_PER_OBJECT = 1, PAD_INDEX  = ON, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON)");
 			
 	}
 }

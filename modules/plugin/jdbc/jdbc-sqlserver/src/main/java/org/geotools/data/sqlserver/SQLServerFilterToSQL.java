@@ -122,8 +122,22 @@ public class SQLServerFilterToSQL extends FilterToSQL {
             }
             
             if (filter instanceof BBOX) {
-                //nothing to do. already encoded above
-                return extraData;
+                /**
+                 * Combine with intersects for efficiencies pointed out in the following link.
+                 * http://docs.geotools.org/latest/userguide/library/main/filter.html
+                 * 
+                 */
+            	out.write( " AND " );
+            	if (swapped) {
+                    e2.accept(this, extraData);
+                }
+                else {
+                    e1.accept(this, extraData);
+                }
+            	 out.write(".STIntersects(");
+            	 e2.accept(this, extraData);
+                 out.write(") = 1");
+                 return extraData;
             }
             
             if (filter instanceof DistanceBufferOperator) {
@@ -198,19 +212,18 @@ public class SQLServerFilterToSQL extends FilterToSQL {
         return extraData;
     }
 
-    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    static SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     static{
         // Set DATE_FORMAT time zone to GMT, as Date's are always in GMT internaly. Otherwise we'll
         // get a local timezone encoding regardless of the actual Date value        
         DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
-        DATETIME_FORMAT.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
 	@Override
     protected void writeLiteral(Object literal) throws IOException {
     	
-    	if (literal instanceof Date) {           
+    	if (literal instanceof Date) {            
             if (literal instanceof java.sql.Date) {
                 out.write("'" + DATE_FORMAT.format(literal) +  "'");
             }
